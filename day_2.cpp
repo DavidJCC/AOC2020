@@ -57,7 +57,7 @@ size_t part_2(const std::vector<std::string>& rules) {
 }
 
 
-size_t main() {
+int main() {
     const auto contents = read_file("input_day_2.txt");
     const auto rules = split_string(contents, "\n");
 

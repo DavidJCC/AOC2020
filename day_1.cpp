@@ -35,7 +35,7 @@ size_t part_2(const std::vector<size_t> & numbers) {
 }
 
 
-size_t main() {
+int main() {
     const auto contents = read_file("input_day_1.txt");
     std::vector<size_t> numbers;
     std::string line;
