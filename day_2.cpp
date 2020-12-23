@@ -16,15 +16,31 @@ struct Policy {
     std::string password;
 };
 
-bool is_valid_password(const Policy& policy) {
+enum class Part {
+    PART_1,
+    PART_2,
+};
+
+bool is_valid_password(const Policy& policy, Part part) {
     auto min = policy.min;
     auto max = policy.max;
     char character = policy.character;
 
-    return (policy.password[min] == character || policy.password[max] == character)
-        && (!(policy.password[min] == character && policy.password[max] == character));
-}
+    switch (part) {
+        case Part::PART_1: {
+            const auto count = std::count(begin(policy.password), end(policy.password), policy.character);
+            return (count >= 1 && (count >= policy.min && count <= policy.max));
+        } break;
 
+        case Part::PART_2: {
+            return (policy.password[min] == character || policy.password[max] == character)
+                && (!(policy.password[min] == character && policy.password[max] == character));
+        } break;
+
+        default:
+            return false;
+    }
+}
 
 Policy parse_line_to_policy(const std::string& line) {
     Policy result {};
@@ -60,8 +76,7 @@ size_t part_1(const std::vector<std::string>& rules) {
 
         Policy policy = parse_line_to_policy(rule);
 
-        const auto count = std::count(begin(policy.password), end(policy.password), policy.character);
-        if (count >= 1 && (count >= policy.min && count <= policy.max)) {
+        if (is_valid_password(policy, Part::PART_1)) {
             ++valid_passwords;
         }
     }
@@ -74,7 +89,8 @@ size_t part_2(const std::vector<std::string>& rules) {
 
     for (const auto& rule : rules) {
         Policy policy = parse_line_to_policy(rule);
-        if (is_valid_password(policy)) {
+
+        if (is_valid_password(policy, Part::PART_2)) {
             valid_passwords++;
         }
     }
@@ -82,11 +98,13 @@ size_t part_2(const std::vector<std::string>& rules) {
     return valid_passwords;
 }
 
-int main() {
-    const auto contents = read_file("input/day_2.txt");
-    const auto rules = split_string(contents, "\n");
+int main(int argc, char* argv[]) {
+    if (argc > 1 && argv[1]) {
+        const auto contents = read_file(argv[1]);
+        const auto rules = split_string(contents, "\n");
 
-    PRINT_DAY(2, rules);
+        PRINT_DAY(2, rules);
+    }
 
     return 0;
 }

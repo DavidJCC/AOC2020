@@ -34,20 +34,21 @@ size_t part_2(const std::vector<size_t> & numbers) {
     return 0;
 }
 
+int main(int argc, char* argv[]) {
+    if (argc > 1 && argv[1]) {
+        const auto contents = read_file(argv[1]);
+        std::vector<size_t> numbers;
+        std::string line;
+        const auto split = split_string(contents, "\n");
 
-int main() {
-    const auto contents = read_file("input/day_1.txt");
-    std::vector<size_t> numbers;
-    std::string line;
-    const auto split = split_string(contents, "\n");
-
-    for (const auto number : split) {
-        if (!number.empty()) {
-            numbers.push_back(std::stoi(number));
+        for (const auto number : split) {
+            if (!number.empty()) {
+                numbers.push_back(std::stoi(number));
+            }
         }
-    }
 
-    PRINT_DAY(1, numbers);
+        PRINT_DAY(1, numbers);
+    }
 
     return 0;
 }
