@@ -47,18 +47,7 @@ int main() {
         }
     }
 
-    if (auto result = part_1(numbers); result) {
-        std::cout << "Result found for day_1 (part 1): " << result << "\n";
-    } else {    
-        std::cout << "Couldn't find result for day_1 (part 1)\n";
-    }
-
-
-    if (auto result = part_2(numbers); result) {
-        std::cout << "Result found for day_1 (part 2): " << result << "\n";
-    } else {    
-        std::cout << "Couldn't find result for day_1 (part 2)\n";
-    }
+    PRINT_DAY(1, numbers);
 
     return 0;
 }

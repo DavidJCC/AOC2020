@@ -2,8 +2,35 @@
 
 #include <string>
 #include <fstream>
-#include <streambuf>
 #include <vector>
+
+struct String_Eater {
+    String_Eater(const std::string& str_)
+        : str(str_)
+        , original(str_)
+        , max_size(str.size())
+    {}
+
+    std::string original;
+    std::string str;
+
+    size_t max_size{};
+
+    std::string eat_chars(const size_t count) {
+        std::string result = str.substr(0, count);
+        str = str.substr(count, max_size);
+        return result;
+    }
+
+    std::string eat_to_next_char(const char character, bool include_delim = false) {
+        auto pos = str.find_first_of(character);
+        if (include_delim) {
+            ++pos;
+        }
+
+        return eat_chars(pos);
+    }
+};
 
 inline std::string read_file(const std::string& path) {
     std::ifstream t(path);
@@ -52,5 +79,12 @@ static auto split_string(const std::string& str, const std::string& delimiter) {
  * @return are the two strings the same?
  */
 inline bool string_compare(const char* str0, const char* str1) { return strcmp(str0, str1) == 0; }
+
+#define PRINT_DAY(DAY, DAY_ARG)\
+    std::cout << "Day " << DAY << ":\n";\
+    std::cout << "    Part 1:       " << part_1(DAY_ARG) << "\n";\
+    std::cout << "    Part 2:       " << part_2(DAY_ARG) << "\n";
+
+
 
 
